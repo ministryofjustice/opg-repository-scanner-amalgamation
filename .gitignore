@@ -68,3 +68,6 @@ typings/
 
 # folder used to download artifacts
 __downloads*
+
+# ignore the build folder
+dist*
