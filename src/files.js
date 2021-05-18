@@ -1,4 +1,10 @@
 const glob = require('@actions/glob');
+const fs = require('fs')
+const path = require('path')
+
+const trim = (dir) => dir.replace(/\/$/, "") + '/'
+const mkdir = (dir) => { if(! fs.existsSync(dir)) fs.mkdirSync(dir) }
+
 
 /**
  * Fetch all files that match the report_name files
@@ -21,6 +27,27 @@ const get = async (params, downloadDirectory) => {
   return new Promise( (resolve) => resolve(reportFiles) )
 }
 
+/**
+ * Write content to file and return if the file exists
+ * @param {string} file
+ * @param {string} directory
+ * @param {string} content
+ * @returns
+ */
+const write = (file, directory, content) => {
+  const dir = trim(directory)
+  mkdir(dir)
+
+  const filepath = path.resolve(dir, file)
+  fs.writeFileSync(filepath, content)
+  return fs.existsSync(filepath)
+
+}
+
+
 module.exports = {
-    get
+  trim,
+  mkdir,
+  get,
+  write
 }

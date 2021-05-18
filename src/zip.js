@@ -4,8 +4,7 @@ const path = require('path')
 const unzipper = require('unzipper')
 const core = require('@actions/core');
 
-const trim = (dir) => dir.replace(/\/$/, "") + '/'
-const mkdir = (dir) => { if(! fs.existsSync(dir)) fs.mkdirSync(dir) }
+const files = require('./files')
 
 /**
  * Downloads the {source} file to {file} in {dir}
@@ -16,8 +15,8 @@ const mkdir = (dir) => { if(! fs.existsSync(dir)) fs.mkdirSync(dir) }
  * @returns
  */
 const download = async (source, dir, file) => {
-    dir = trim(dir)
-    mkdir(dir)
+    dir = files.trim(dir)
+    files.mkdir(dir)
 
     const destination = path.resolve(dir, file)
     await axios.get(source, {responseType: 'arraybuffer'}).then((response) => {
@@ -35,8 +34,8 @@ const download = async (source, dir, file) => {
  * @param {string} target
  */
 const extract = async (source, dir, target) => {
-    dir = trim(dir)
-    target = trim(target)
+    dir = files.trim(dir)
+    target = files.trim(target)
     const destination = path.resolve(dir, target)
     const stream  = fs .createReadStream(source)
 
