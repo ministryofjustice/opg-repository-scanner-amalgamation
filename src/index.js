@@ -8,6 +8,7 @@ const load = require('./loader')
 const files = require('./files')
 const as = require('./as')
 
+const version = "v1.0.0"
 /**
  *
  */
@@ -27,21 +28,21 @@ async function run() {
   await download.get(octo, repos, params, downloadDirectory)
   // get all the report files
   const reportFiles = await files.get(params, downloadDirectory)
-
   // merge object to push everything into
   const loaded  = load.fromFiles(reportFiles)
   loaded.packages = group.byName(loaded.packages)
-
   // save the merged report as json and then markdown
-  files.write("report.v1.json", artifactDir, as.json(loaded) )
-  files.write("report.v1.md", artifactDir, as.markdown(loaded) )
+  files.write(`report.${version}.json`, artifactDir, as.json(loaded) )
+  files.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
 
 }
 
 
-
 try {
-  run()
+  run().catch((e) => {
+    core.setFailed(e.message);
+    console.log(e)
+  })
 } catch (error) {
   core.setFailed(error.message);
 }

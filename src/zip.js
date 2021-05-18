@@ -44,7 +44,6 @@ const extract = async (source, dir, target) => {
     await new Promise((resolve) => {
         stream.on('close', () => resolve())
     })
-
 }
 
 /**
