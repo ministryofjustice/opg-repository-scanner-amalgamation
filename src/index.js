@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const artifact = require('@actions/artifact')
 
 const inputs = require('./inputs');
 const octokit = require('./octokit')
@@ -13,6 +14,7 @@ const version = "v1.0.0"
  *
  */
 async function run() {
+  const artifactName = 'merged-report'
   const now = Date.now()
   const downloadDirectory = `./__downloads-${now}/`
   const artifactDir = `./__artifact-${now}/`
@@ -32,8 +34,17 @@ async function run() {
   const loaded  = load.fromFiles(reportFiles)
   loaded.packages = group.byName(loaded.packages)
   // save the merged report as json and then markdown
-  files.write(`report.${version}.json`, artifactDir, as.json(loaded) )
-  files.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
+  const jsonFile = files.write(`report.${version}.json`, artifactDir, as.json(loaded) )
+  const mkFile = files.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
+  const files = [ `${artifactDir}report.${version}.json`, `${artifactDir}report.${version}.md` ]
+
+  if (jsonFile && mkFile){
+    core.info(`Creating artifact for workflow from files: \n - ${files.join('\n - ')}`)
+    const client = artifact.create()
+    await client.uploadArtifact(artifactName, files, artifactDir, {
+      continueOnError: false
+    })
+  }
 
 }
 
