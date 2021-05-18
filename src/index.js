@@ -25,7 +25,7 @@ async function run() {
   const octo = octokit.get(params.token)
   const repos = await octokit.repos(octo, params.organisation_slug, params.team_slug)
   // do all the downloads
-  await download.get(octo, repos, params, downloadDirectory)
+  await download.run(octo, repos, params, downloadDirectory)
   // get all the report files
   const reportFiles = await files.get(params, downloadDirectory)
   // merge object to push everything into

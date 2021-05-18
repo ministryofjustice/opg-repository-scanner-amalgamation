@@ -18,7 +18,8 @@ const packagesMarkdown = (packages) => {
     let markdown = "| Package | Repositories | Version | Occurances | Tags | Licenses |\n| -- | -- | -- | -- | -- | -- |\n"
 
     for(const row of packages){
-        const cols = [ row.name, row.repository, row.version, row.source, row.tags, row.license]
+        markdown += `| ${row.name} `
+        const cols = [ row.repository, row.version, row.source, row.tags, row.license]
         for(const col of cols) markdown += `| ${col.join('<br>').replace(/\|/g, "\\|")} `
         markdown += "|\n"
     }
