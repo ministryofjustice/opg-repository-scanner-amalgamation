@@ -1,0 +1,21 @@
+name: Publish Amalgamated Report
+
+on:
+  push:
+    branches:
+      - "main"
+  schedule:
+    # Every Tuesday, at 9.15am
+    - cron: '15 9 * * 2'
+
+jobs:
+  run_with_self_on_main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm run all
+        run: |
+          npm install
+          npm run all
+      - name: Run self with main
+        uses: ./
