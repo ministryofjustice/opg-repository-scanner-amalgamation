@@ -66,8 +66,10 @@ typings/
 # next.js build output
 .next
 
-# folder used to download artifacts
+# ignore generated files in tests
+tests/__ziptest*
+# folder used to download / generate artifacts
 __downloads*
-
+__artifact*
 # ignore the build folder
 dist*
