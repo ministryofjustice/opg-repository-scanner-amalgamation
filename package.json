@@ -1,0 +1,34 @@
+{
+  "name": "javascript-action",
+  "version": "1.0.0",
+  "description": "JavaScript Action Template",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src/**/*.js --fix",
+    "prepare": "ncc build src/index.js -o dist --source-map --license licenses.txt",
+    "test": "jest",
+    "all": "npm run lint && npm run prepare && npm run test --detectOpenHandles",
+    "tester": "INPUT_ORGANISATION_SLUG='ministryofjustice' INPUT_TEAM_SLUG='opg' INPUT_ARTIFACT_NAMES='repository-scan-result' INPUT_REPORT_NAMES='raw.json' INPUT_ORGANISATION_TOKEN=$(echo ${ORG_TOKEN}) node ./dist/index.js"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.7",
+    "@actions/github": "^5.0.0",
+    "@actions/glob": "^0.1.1",
+    "axios": "^0.21.1",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "unzipper": "^0.10.11"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.28.5",
+    "eslint": "^7.26.0",
+    "jest": "^26.6.3"
+  }
+}

@@ -1,0 +1,28 @@
+name: 'OPG scanner amalgamation'
+description: 'Amalgamate reports to a single report'
+inputs:
+  organisation_slug:
+    description: 'Slug of org to use for permissions'
+    default: 'opg'
+    required: true
+  organisation_token:
+    description: 'GitHub token which has org level access'
+    required: true
+  team_slug:
+    description: 'GitHub slug of the team to run against'
+    required: true
+  artifact_names:
+    description: 'List of artifact names to download'
+    required: true
+    default: 'repository-scan-result'
+  report_name:
+    description: 'List of reports to get out of the artifact'
+    required: true
+    default: 'raw.json'
+
+outputs:
+  time: # output will be available to future steps
+    description: 'The message to output'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
