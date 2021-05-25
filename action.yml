@@ -19,10 +19,10 @@ inputs:
     description: 'List of reports to get out of the artifact'
     required: true
     default: 'raw.json'
+  directory:
+    required: true
+    default: ${{ github.workspace }}
 
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
 runs:
   using: 'node12'
   main: 'dist/index.js'

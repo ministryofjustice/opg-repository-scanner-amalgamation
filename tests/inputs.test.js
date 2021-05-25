@@ -41,6 +41,7 @@ test(`Test validInputParameters validates with env vars set`, async () => {
     process.env.INPUT_ORGANISATION_SLUG = 'test'
     process.env.INPUT_ARTIFACT_NAMES = 'test1,test2'
     process.env.INPUT_REPORT_NAMES = 'test'
+    process.env.INPUT_DIRECTORY = './'
 
     const params = inputParams.get()
     const valid = inputParams.validate(params)

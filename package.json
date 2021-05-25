@@ -8,7 +8,7 @@
     "prepare": "ncc build src/index.js -o dist --source-map --license licenses.txt",
     "test": "jest",
     "all": "npm run lint && npm run prepare && npm run test --detectOpenHandles",
-    "tester": "INPUT_ORGANISATION_SLUG='ministryofjustice' INPUT_TEAM_SLUG='opg' INPUT_ARTIFACT_NAMES='repository-scan-result' INPUT_REPORT_NAMES='raw.json' INPUT_ORGANISATION_TOKEN=$(echo ${ORG_TOKEN}) node ./dist/index.js"
+    "tester": "INPUT_DIRECTORY='./' INPUT_ORGANISATION_SLUG='ministryofjustice' INPUT_TEAM_SLUG='opg' INPUT_ARTIFACT_NAMES='repository-scan-result' INPUT_REPORT_NAMES='raw.json' INPUT_ORGANISATION_TOKEN=$(echo ${ORG_TOKEN}) node ./dist/index.js"
   },
   "keywords": [
     "GitHub",

@@ -38,6 +38,7 @@ const get = () => {
         team_slug: input('team_slug', false),
         artifact_names: input('artifact_names', true),
         report_names: input('report_names', true),
+        directory: input('directory', false)
     }
 }
 
