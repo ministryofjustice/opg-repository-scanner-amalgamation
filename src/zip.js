@@ -57,9 +57,9 @@ const extract = async (source, dir, target) => {
 const get = async (repo, artifact, token, dir) => {
     dir = files.trim(dir)
     const url = artifact.archive_download_url
-    const tokenUrl = url.replace('api.', `${token}@api.`)
+    core.info(`Downloading [${url}] to [${dir}]`)
 
-    core.info(`Downloading ${url}`)
+    const tokenUrl = url.replace('api.', `${token}@api.`)
 
     await download( tokenUrl, dir, `${repo.name}.zip`)
 
