@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-//const artifact = require('@actions/artifact')
+const artifact = require('@actions/artifact')
 const path = require('path')
 
 const inputs = require('./inputs');
@@ -45,7 +45,7 @@ async function run() {
   const files = [ `${artifactDir}report.${version}.json`, `${artifactDir}report.${version}.md` ]
 
   if (jsonFile && mkFile){
-    core.info(`Creating artifact for workflow from files: \n - ${files.join('\n - ')}`)
+    core.info(`Creating artifact [${artifactName}] for workflow from files: \n - ${files.join('\n - ')}`)
     const client = artifact.create()
     await client.uploadArtifact(artifactName, files, artifactDir, {
       continueOnError: false
