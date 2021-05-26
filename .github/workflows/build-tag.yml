@@ -1,0 +1,42 @@
+---
+name: "Build and Tag"
+
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - 'dist/**'
+
+jobs:
+  build_and_tag:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v2"
+        with:
+          token: ${{ secrets.ORG_ACCESS_TOKEN }}
+      - name: "Run build process"
+        run: |
+          rm -Rf ./dist/
+          npm install
+          npm run all
+      - name: "Commit the build files"
+        run: |
+          git config --global user.email "tools@digital.justice.gov.uk"
+          git config --global user.name "Github Action"
+          echo "${GITHUB_SHA}" > ./dist/sha.txt
+          git add ./dist/ --force
+          git commit -m "Build files for release"
+          git tag -fa "latest" -m "latest"
+          git push origin main --force
+          git push origin latest --force
+      - name: Increment and push tag
+        uses: anothrNick/github-tag-action@1.33.0
+        id: create_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_ACCESS_TOKEN }}
+          INITIAL_VERSION: 0.0.0
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
+          WITH_V: true
