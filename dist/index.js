@@ -34031,7 +34031,7 @@ async function run() {
   f.mkdir(`${params.directory}./__artifacts`)
 
 
-  const artifactName = 'merged-report'
+  const artifactName = 'amalgamated_package_scan_report'
   const now = Date.now().toString()
   const downloadDir = path.resolve(params.directory, '__downloads', now) + '/'
   const artifactDir = path.resolve(params.directory, '__artifacts', now) + '/'
