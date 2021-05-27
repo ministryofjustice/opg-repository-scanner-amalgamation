@@ -15,7 +15,7 @@ inputs:
     description: 'List of artifact names to download'
     required: true
     default: 'repository-scan-result'
-  report_name:
+  report_names:
     description: 'List of reports to get out of the artifact'
     required: true
     default: 'raw.json'
