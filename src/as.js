@@ -1,3 +1,4 @@
+var slugify = require('slugify')
 
 /**
  *
@@ -25,6 +26,38 @@ const packagesMarkdown = (packages) => {
     }
     return markdown
 }
+
+const packagesHtml = (packages) => {
+    let html = `
+    <table class='filter'>
+        <thead>
+            <tr>
+                <th>Package</th>
+                <th>Repositories</th>
+                <th>Versions</th>
+                <th>Occurances</th>
+                <th>Tags</th>
+                <th>Licenses</th>
+            </tr>
+        </thead>
+        <tbody>\n`
+    packages = packages.sort((a, b) => {
+        if (a.name > b.name) return 1
+        else if (a.name < b.name ) return -1
+        return 0
+     })
+    for(const row of packages){
+        const rowid = slugify(row.name)
+        html += `<tr><th id='package-${rowid}'>${row.name}</th>`
+        const cols = [ row.repository, row.version, row.source, row.tags, row.license]
+        for(const col of cols){
+            if (cols.length > 0) html += `<td><ul><li>${col.join('</li><li>')}</li></ul></td>`
+            else html += "<td></td>"
+        }
+        html += "</tr>\n"
+    }
+    return `${html}</tbody></table>`
+}
 /**
  *
  * @param {*} object
@@ -34,7 +67,12 @@ const markdown = (object) => {
 }
 
 
+const html = (object) => {
+    return packagesHtml(object.packages)
+}
+
 module.exports = {
     json,
-    markdown
+    markdown,
+    html
 }

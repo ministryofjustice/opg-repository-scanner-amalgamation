@@ -25,6 +25,7 @@
     "axios": "^0.21.1",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "slugify": "^1.5.3",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {

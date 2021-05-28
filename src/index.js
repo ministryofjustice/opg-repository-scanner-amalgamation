@@ -44,9 +44,14 @@ async function run() {
   // save the merged report as json and then markdown
   const jsonFile = f.write(`report.${version}.json`, artifactDir, as.json(loaded) )
   const mkFile = f.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
-  const files = [ `${artifactDir}report.${version}.json`, `${artifactDir}report.${version}.md` ]
+  const hFile = f.write(`report.${version}.html`, artifactDir, as.html(loaded) )
+  const files = [
+    `${artifactDir}report.${version}.json`,
+    `${artifactDir}report.${version}.md`,
+    `${artifactDir}report.${version}.html`
+  ]
 
-  if (jsonFile && mkFile){
+  if (jsonFile && mkFile && hFile){
     core.info(`Creating artifact [${artifactName}] for workflow from files: \n - ${files.join('\n - ')}`)
     const client = artifact.create()
     await client.uploadArtifact(artifactName, files, artifactDir, {
