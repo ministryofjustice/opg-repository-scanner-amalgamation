@@ -34027,11 +34027,13 @@ async function run() {
   inputs.validate(params)
   core.info(`GitHub Action inputs validated.`)
 
-  f.mkdir(`${params.directory}./__downloads`)
-  f.mkdir(`${params.directory}./__artifacts`)
+  const downloadBase = path.resolve(params.directory, '__downloads')
+  const artifactBase = path.resolve(params.directory, '__artifacts')
+  f.mkdir(downloadBase)
+  f.mkdir(artifactBase)
 
 
-  const artifactName = 'merged-report'
+  const artifactName = 'amalgamated_package_scan_report'
   const now = Date.now().toString()
   const downloadDir = path.resolve(params.directory, '__downloads', now) + '/'
   const artifactDir = path.resolve(params.directory, '__artifacts', now) + '/'
