@@ -20,8 +20,10 @@ async function run() {
   inputs.validate(params)
   core.info(`GitHub Action inputs validated.`)
 
-  f.mkdir(`${params.directory}./__downloads`)
-  f.mkdir(`${params.directory}./__artifacts`)
+  const downloadBase = path.resolve(params.directory, '__downloads')
+  const artifactBase = path.resolve(params.directory, '__artifacts')
+  f.mkdir(downloadBase)
+  f.mkdir(artifactBase)
 
 
   const artifactName = 'amalgamated_package_scan_report'
