@@ -38,12 +38,13 @@ async function run() {
   await download.run(octo, repos, params, downloadDir)
   // get all the report files
   const reportFiles = await f.get(params, downloadDir)
-  core.info(`Generating report from files`)
+  core.info(`Generating report from source files`)
   // merge object to push everything into
   const loaded  = load.fromFiles(reportFiles)
   core.info(`Settings packages on report`)
   loaded.packages = group.byName(loaded.packages)
   // save the merged report as json and then markdown
+  core.info(`Writting report to html, md, & json files.`)
   const jsonFile = f.write(`report.${version}.json`, artifactDir, as.json(loaded) )
   const mkFile = f.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
   const hFile = f.write(`report.${version}.html`, artifactDir, as.html(loaded) )
