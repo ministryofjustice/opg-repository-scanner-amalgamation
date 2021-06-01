@@ -33460,8 +33460,8 @@ const packagesHtml = (packages) => {
         html += `<tr><th id='package-${rowid}'>${row.name}</th>`
         const cols = [ row.repository, row.version, row.source, row.tags, row.license]
         for(const col of cols){
-            if (cols.length > 0) html += `<td><ul><li>${col.join('</li><li>')}</li></ul></td>`
-            else html += "<td></td>"
+            if (col.length > 0) html += `<td data-len="${col.length}"><ul><li>${col.join('</li><li>')}</li></ul></td>`
+            else html += `<td data-len="${col.length}"></td>`
         }
         html += "</tr>\n"
     }
@@ -33878,13 +33878,13 @@ const extract = async (source, dir, target) => {
 const get = async (repo, artifact, token, dir) => {
     dir = files.trim(dir)
     const url = artifact.archive_download_url
-    core.info(`Downloading [${url}] to [${dir}]`)
+    core.debug(`Downloading [${url}] to [${dir}]`)
 
     const tokenUrl = url.replace('api.', `${token}@api.`)
 
     await download( tokenUrl, dir, `${repo.name}.zip`)
 
-    core.info(`Extracting ${dir}${repo.name}.zip`)
+    core.debug(`Extracting ${dir}${repo.name}.zip`)
     await extract(`${dir}${repo.name}.zip`, dir, repo.name)
 
     return new Promise((resolve) => resolve() )
@@ -34146,10 +34146,13 @@ async function run() {
   await download.run(octo, repos, params, downloadDir)
   // get all the report files
   const reportFiles = await f.get(params, downloadDir)
+  core.info(`Generating report from source files`)
   // merge object to push everything into
   const loaded  = load.fromFiles(reportFiles)
+  core.info(`Settings packages on report`)
   loaded.packages = group.byName(loaded.packages)
   // save the merged report as json and then markdown
+  core.info(`Writting report to html, md, & json files.`)
   const jsonFile = f.write(`report.${version}.json`, artifactDir, as.json(loaded) )
   const mkFile = f.write(`report.${version}.md`, artifactDir, as.markdown(loaded) )
   const hFile = f.write(`report.${version}.html`, artifactDir, as.html(loaded) )
