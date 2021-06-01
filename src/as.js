@@ -51,7 +51,7 @@ const packagesHtml = (packages) => {
         html += `<tr><th id='package-${rowid}'>${row.name}</th>`
         const cols = [ row.repository, row.version, row.source, row.tags, row.license]
         for(const col of cols){
-            if (cols.length > 0) html += `<td><ul><li>${col.join('</li><li>')}</li></ul></td>`
+            if (col.length > 0) html += `<td><ul><li>${col.join('</li><li>')}</li></ul></td>`
             else html += "<td></td>"
         }
         html += "</tr>\n"
