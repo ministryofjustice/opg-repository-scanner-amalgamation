@@ -33878,13 +33878,13 @@ const extract = async (source, dir, target) => {
 const get = async (repo, artifact, token, dir) => {
     dir = files.trim(dir)
     const url = artifact.archive_download_url
-    core.info(`Downloading [${url}] to [${dir}]`)
+    core.debug(`Downloading [${url}] to [${dir}]`)
 
     const tokenUrl = url.replace('api.', `${token}@api.`)
 
     await download( tokenUrl, dir, `${repo.name}.zip`)
 
-    core.info(`Extracting ${dir}${repo.name}.zip`)
+    core.debug(`Extracting ${dir}${repo.name}.zip`)
     await extract(`${dir}${repo.name}.zip`, dir, repo.name)
 
     return new Promise((resolve) => resolve() )
