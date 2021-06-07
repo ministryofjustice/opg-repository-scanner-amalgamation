@@ -32,12 +32,12 @@ const packagesHtml = (packages) => {
     <table class='filter'>
         <thead>
             <tr>
-                <th>Package</th>
-                <th>Repositories</th>
-                <th>Versions</th>
-                <th>Occurances</th>
-                <th>Tags</th>
-                <th>Licenses</th>
+                <th class='col col-package'>Package</th>
+                <th class='col col-repositories'>Repositories</th>
+                <th class='col col-versions'>Versions</th>
+                <th class='col col-occurances'>Occurances</th>
+                <th class='col col-tags'>Tags</th>
+                <th class='col col-licenses'>Licenses</th>
             </tr>
         </thead>
         <tbody>\n`
@@ -47,12 +47,12 @@ const packagesHtml = (packages) => {
         return 0
      })
     for(const row of packages){
-        const rowid = slugify(row.name)
-        html += `<tr><th id='package-${rowid}'>${row.name}</th>`
-        const cols = [ row.repository, row.version, row.source, row.tags, row.license]
-        for(const col of cols){
-            if (col.length > 0) html += `<td data-len="${col.length}"><ul><li>${col.join('</li><li>')}</li></ul></td>`
-            else html += `<td data-len="${col.length}"></td>`
+        const rowid = slugify(row.name).replace("@", "")
+        html += `<tr><th id='package-${rowid}' class='col col-package'>${row.name}</th>`
+        const cols = { repositories:row.repository, versions: row.version, occurances: row.source, tags: row.tags, licenses: row.license }
+        for(const [key, col] of Object.entries(cols) ){
+            if (col.length > 0) html += `<td data-len="${col.length}" class="col col-${key}"><ul><li>${col.join('</li><li>')}</li></ul></td>`
+            else html += `<td data-len="${col.length}" class="col col-${key}"></td>`
         }
         html += "</tr>\n"
     }
