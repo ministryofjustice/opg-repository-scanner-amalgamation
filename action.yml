@@ -1,0 +1,48 @@
+name: 'OPG scanner amalgamation'
+description: 'Amalgamate reports to a single report that can be published'
+inputs:
+  organisation_slug:
+    description: 'Slug of org to use for permissions'
+    default: 'opg'
+    required: true
+  organisation_token:
+    description: 'GitHub token which has org level access'
+    required: true
+  team_slug:
+    description: 'GitHub slug of the team to run against'
+    required: true
+  directory:
+    required: true
+    default: ${{ github.workspace }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: checkout
+      name: Checkout code
+      uses: actions/checkout@v2
+    - id: setup-python-3
+      name: Setup python 3
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9.7'
+    - id: pip-install
+      name: Run pip install
+      shell: bash
+      run: |
+        pip --disable-pip-version-check install -r ${{ github.action_path }}/./app/requirements.txt
+    - id: scanner_runner
+      name: Run python script
+      shell: bash
+      run: |
+        python ${{ github.action_path }}/./app/main.py \
+          --organisation-slug='${{ inputs.organisation_slug }}' \
+          --organisation-token='${{ inputs.organisation_token }}' \
+          --team-slug='${{ inputs.team_slug }}' \
+          --team-slug='${{ inputs.team_slug }}' \
+    - id: upload
+      name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: 'repository-scan-result'
+        path: ${{ steps.scanner_runner.outputs.artifact_directory }}
