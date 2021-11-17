@@ -10,7 +10,7 @@ def get_artifacts(self):
         <https://developer.github.com/v3/actions/artifacts/#list-artifacts-for-a-repository>
     :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Artifacts.Artifact`
     """
-    pp(self)
+
     return github.PaginatedList.PaginatedList(
         Artifact,
         self._requester,
