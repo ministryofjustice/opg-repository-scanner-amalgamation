@@ -12,10 +12,13 @@ class rate_limiter:
     # create an Rate class as we'll use this struct
     LIMITER:Rate = Rate(None, {}, {'limit':5000, 'remaining':5000}, True)
     CONNECTION:github.Github = None
+    PAUSED = False
 
     @staticmethod
-    def update() -> RateLimit:
+    def update() -> Rate:
         """
+        Uses CONNECTION to update LIMITER with a call to get_rate_limit()
+        Returns the updated version for ease
         """
         if rate_limiter.CONNECTION == None:
             raise ValueError("CONNECTION not set")
@@ -27,6 +30,9 @@ class rate_limiter:
     @staticmethod
     def pause(extend_pause_by:int = 5) -> datetime:
         """
+        Pauses the execution with time.sleep()
+
+        Uses the details of LIMITER.reset to work this out
         """
         date = rate_limiter.LIMITER.reset + timedelta(seconds=extend_pause_by)
         now = datetime.utcnow()
@@ -43,9 +49,9 @@ class rate_limiter:
             if refresh:
                 rate_limiter.update()
             if rate_limiter.LIMITER.remaining <= 1:
-                rate_limiter.pause(extend_pause_by)
+                return rate_limiter.pause(extend_pause_by)
 
         except RateLimitExceededException:
-            rate_limiter.pause()
+            return rate_limiter.pause(extend_pause_by)
 
         return
