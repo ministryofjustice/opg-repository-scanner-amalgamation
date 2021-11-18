@@ -37,8 +37,4 @@ class handler:
         Parse & validate the input arguments.
 
         """
-        args = self.arg_parser.parse_args()
-
-        # no errors, so assign to self
-        self.args = args
-        return self
+        return self.arg_parser.parse_args()
