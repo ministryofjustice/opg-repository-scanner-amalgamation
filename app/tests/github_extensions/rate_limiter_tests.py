@@ -13,7 +13,7 @@ def test_rate_limiter_pause():
     Create mock rate limit object and use that with fake dates to test pause
     """
     before = datetime.utcnow()
-    pause_for = 5
+    pause_for = 2
     rate = Rate(None, {}, {'limit':2, 'remaining':1, 'reset': int(before.timestamp()) }, True)
 
     rate_limiter.LIMITER = rate
@@ -24,5 +24,3 @@ def test_rate_limiter_pause():
 
     assert (after > before) == True
     assert (gap >= pause_for) == True
-
-    assert False
