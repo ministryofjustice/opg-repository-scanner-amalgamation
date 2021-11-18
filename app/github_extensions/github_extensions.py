@@ -1,5 +1,5 @@
 from github import Repository
-from .Repository import get_artifacts, get_latest_artifact
+from .Repository import get_artifacts, get_latest_artifact, download_latest_artifact
 
 def add_repository_extensions(repository:Repository):
     """
@@ -10,6 +10,7 @@ def add_repository_extensions(repository:Repository):
     Also add custom function to find the specific artifact we want
     """
     repository.get_artifacts = get_artifacts.__get__(repository)
+    repository.download_latest_artifact = download_latest_artifact.__get__(repository)
     repository.get_latest_artifact = get_latest_artifact.__get__(repository)
 
     return repository
