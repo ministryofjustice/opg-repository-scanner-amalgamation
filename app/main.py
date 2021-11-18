@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime
 from argparse import Namespace
 from pprint import pp
-from github import Repository
+from github.Repository import Repository
 from github.MainClass import Github
 from github.Organization import Organization
 from github.Team import Team
@@ -24,16 +24,9 @@ def downloads_dir() -> str:
     return f"{dir}/__downloads__/{ts}"
 
 
-
-def main():
-    """
-    Main execution function
-    """
-    dir = downloads_dir()
-    io = handler()
-    args = io.parser().parse()
-
+def reports_from_github(args:Namespace, dir:str):
     out.group_start("Github data")
+
     g:Github = Github(args.organisation_token)
     org:Organization = g.get_organization(args.organisation_slug)
     team:Team = org.get_team_by_slug(args.team_slug)
@@ -50,18 +43,38 @@ def main():
 
     headers = {'Authorization': f"token {args.organisation_token}"}
     i = 0
+    reports = []
+    missing = []
+    r:Repository
     for r in repos:
         i = i + 1
         out.group_start(f"Repository [{i}/{total}] [{r.name}]")
 
         r = github_extensions.add_repository_extensions(r)
-        artifact = r.get_latest_artifact()
-        if artifact != None:
-            d = artifact.download(f"{dir}/{r.name}/", headers)
-
+        downloaded = r.download_latest_artifact(dir, headers)
+        if downloaded != None:
+            reports.append((r.name, downloaded))
+        else:
+            missing.append((r.name, r.archived))
 
         out.group_end()
 
+    out.group_start("Summary")
+    out.log(f"Found [{len(reports)}/{total}] matching repository artifact reports")
+    out.group_end()
+
+    return (reports, missing)
+
+
+def main():
+    """
+    Main execution function
+    """
+    dir = downloads_dir()
+    io = handler()
+    args = io.parser().parse()
+
+    reports, missing = reports_from_github(args, dir)
 
 
 
