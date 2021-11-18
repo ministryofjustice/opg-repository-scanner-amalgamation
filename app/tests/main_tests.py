@@ -36,6 +36,7 @@ def test_packages_to_html():
         ("NEW", f"{dir}/__samples/raw_files/new")
     ]
     all = merge_raw_packages(files)
-    file = packages_to_html(all)
+    html_f, json_f = packages_to_html(all)
 
-    assert os.path.isfile(file)
+    assert os.path.isfile(html_f)
+    assert os.path.isfile(json_f)

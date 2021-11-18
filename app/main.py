@@ -22,7 +22,6 @@ def timestamp_directory(dirname:str = "downloads") -> str:
     """
     ts = datetime.utcnow().strftime('%Y-%m-%d-%H%M%S')
     dir = Path( os.path.dirname(__file__ ) + "/../" ).resolve()
-    dir = f"{dir}/__{dirname}__/{ts}"
     path = Path(f"{dir}/__{dirname}__/{ts}")
 
     os.makedirs(path, exist_ok=True)
@@ -100,8 +99,15 @@ def merge_raw_packages(report_files:list) -> list:
 def packages_to_html(
     packages:list,
     headers: list = ['name', 'version', 'repository', 'source', 'tags', 'type', 'license']
-    ) -> str:
+    ) -> tuple:
+    """
+    Use packages passed in to create a html table containing a line for each package
 
+    This is different that the older version, but should provided clearer route to finding
+    where and which repo what version a packages is
+    """
+
+    out.group_start("Generating HTML report")
     head = f"<thead>{heading(headers)}</thead>"
 
     body = ""
@@ -112,12 +118,21 @@ def packages_to_html(
     table = f"<table class='filter'>{head}<tbody>{body}</tbody></table>"
     dir = timestamp_directory("reports")
 
-    file = f"{dir}/report.v1.0.0.html"
-    with open(file, 'w') as html_file:
+    file_path = f"{dir}/report.v1.0.0.html"
+    out.debug(f"Writing HTML to [{file_path}]")
+    with open(file_path, 'w') as html_file:
         html_file.write(table)
         html_file.close()
 
-    return file
+
+    json_path = f"{dir}/report.v1.0.0.json"
+    out.debug(f"Writing JSON to [{json_path}]")
+    with open(json_path, 'w') as json_file:
+        json.dump(packages, json_file)
+        json_file.close()
+
+    out.group_end()
+    return file_path, json_path
 
 
 def main():
@@ -131,8 +146,15 @@ def main():
     reports, missing = reports_from_github(args, dir)
     all_packages = merge_raw_packages(reports)
 
-    #packages_to_html(all_packages)
+    html_file, json_file = packages_to_html(all_packages)
+    dir = os.path.dirname(html_file)
 
+    out.group_start("Output")
+    out.log(f"Generated reports here [{dir}]")
+    out.log(f"  HTML report here [{html_file}]")
+    out.log(f"  JSON report here [{json_file}]")
+    out.set_var("amalgamated_package_scan_report", dir)
+    out.group_end()
 
 
 if __name__ == "__main__":
