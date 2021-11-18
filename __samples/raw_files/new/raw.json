@@ -1,0 +1,105 @@
+{
+    "packages": [
+        {
+            "name": "Flask",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==1.1.2",
+            "source": "./lambda_functions/v1/requirements/requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "Flask",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==1.1.2",
+            "source": "./lambda_functions/v1/requirements/dev-requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "Werkzeug",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==1.0.1",
+            "source": "./lambda_functions/v1/requirements/requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "boto3",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": null,
+            "source": "./integration_tests/v1/requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "boto3",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": null,
+            "source": "./pact/requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "connexion",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==2.7.0",
+            "source": "./lambda_functions/v1/requirements/dev-requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+        {
+            "name": "connexion",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==2.7.0",
+            "source": "./mock_sirius_backend/requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        },
+
+        {
+            "name": "go",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "1.16",
+            "source": "./docs/support_scripts/aws/go.mod",
+            "license": null,
+            "type": "manifest",
+            "tags": "go, gomod, manifest, third-party"
+        },
+        {
+            "name": "golang.org/x/crypto",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "v0.0.0-20190308221718-c2843e01d9a2",
+            "source": "./docs/support_scripts/aws/go.sum",
+            "license": null,
+            "type": "lock",
+            "tags": "go, gomodlock"
+        },
+        {
+            "name": "yarl",
+            "repository": "ministryofjustice/opg-data-lpa",
+            "version": "==1.6.3",
+            "source": "./lambda_functions/v1/requirements/dev-requirements.txt",
+            "license": null,
+            "type": "manifest",
+            "tags": "pip, python, manifest"
+        }
+    ],
+    "sources": [
+        "./docs/support_scripts/aws/go.sum",
+        "./docs/support_scripts/aws/go.mod",
+        "./integration_tests/v1/requirements.txt",
+        "./pact/requirements.txt",
+        "./lambda_functions/v1/requirements/dev-requirements.txt",
+        "./lambda_functions/v1/requirements/requirements.txt",
+        "./lambda_functions/v1/requirements/pact-requirements.txt",
+        "./mock_sirius_backend/requirements.txt"
+    ]
+}

@@ -1,0 +1,185 @@
+{
+    "packages": [
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "flask",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/pact/opg_pact/mock/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "boto3",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/pact/opg_pact/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pytest",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/pact/opg_pact/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "moto",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/pact/opg_pact/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "setuptools",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "wheel",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "twine",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "boto3",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "requests-aws4auth",
+            "version": "1.0.1",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "moto",
+            "version": "1.3.16",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pyjwt",
+            "version": "1.7.1",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "hypothesis",
+            "version": "5.38.1",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "validators",
+            "version": "",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "yarl",
+            "version": "1.6.2",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "localstack-client",
+            "version": "1.5",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "fakeredis",
+            "version": "1.4.4",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pytest",
+            "version": "6.1.1",
+            "type": "manifest",
+            "source": "./shared_code/sirius_service/opg_sirius_service/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pytest",
+            "version": "",
+            "type": "manifest",
+            "source": "./template_repo/opg_data_template/integration_tests/v1/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pytest-env",
+            "version": "",
+            "type": "manifest",
+            "source": "./template_repo/opg_data_template/integration_tests/v1/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        },
+        {
+            "repository": "ministryofjustice/opg-data",
+            "name": "pytest-xdist",
+            "version": "",
+            "type": "manifest",
+            "source": "./template_repo/opg_data_template/integration_tests/v1/requirements.txt",
+            "license": "",
+            "tags": "manifest, python, pip"
+        }
+
+    ]
+}
