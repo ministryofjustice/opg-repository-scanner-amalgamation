@@ -1,7 +1,7 @@
 import os
 import requests, zipfile, io
 from pprint import pp
-
+from pathlib import Path
 
 class write:
     """
@@ -14,7 +14,8 @@ class write:
         Download a zip file from a url and extract it to the destination
         Headers should contatin auth
         """
-        os.makedirs(os.path.dirname(destination_directory), exist_ok=True)
+        destination_directory = Path( os.path.dirname(destination_directory) ).resolve()
+        os.makedirs(destination_directory, exist_ok=True)
 
         r = requests.get(url, headers=headers)
         if r.status_code == 200:
