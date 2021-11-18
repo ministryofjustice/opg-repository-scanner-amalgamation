@@ -73,9 +73,12 @@ class gh:
         """
 
         artifacts = self.artifacts(connection, repository)
+        total = artifacts.totalCount
+        i = 0
         for a in artifacts:
+            i = i + 1
             limiter.check(connection)
-            out.debug(f"Artifact [{a.name}] on [{a.updated_at}]")
+            out.debug(f" [{i}/{total}] Artifact [{a.name}] on [{a.updated_at}]")
             if seaarch_for == a.name:
                 out.debug(f"Found artifact [{a.name}] with node id [{a.node_id}]")
                 return a
