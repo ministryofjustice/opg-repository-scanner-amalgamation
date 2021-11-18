@@ -16,6 +16,8 @@ def row(package:dict, cols:list) -> str:
         # check for lists, in particular on the tag
         if type(value) == list:
             value = ", ".join(value)
+        if type(value) == dict:
+            value = value.get('version', None)
 
         if i == 0:
             row_id = int(datetime.utcnow().timestamp() * 1000)
