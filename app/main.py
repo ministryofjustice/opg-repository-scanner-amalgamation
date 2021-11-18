@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import json
 from pathlib import Path
 from datetime import datetime
 from argparse import Namespace
@@ -8,23 +9,32 @@ from github.Repository import Repository
 from github.MainClass import Github
 from github.Organization import Organization
 from github.Team import Team
-
 from inputs.handler import handler
 from github_extensions import github_extensions,rate_limiter
+from templates.table import heading, row
 from out import out
 
 
-def downloads_dir() -> str:
+def timestamp_directory(dirname:str = "downloads") -> str:
     """
-    Return the downloads directory path with timestamp for
-    uniqueness
+    Return the dirname directory path based on one level above this script
+    with timestamp for uniquenes and creates the folder if it doesnt exist
     """
     ts = datetime.utcnow().strftime('%Y-%m-%d-%H%M%S')
     dir = Path( os.path.dirname(__file__ ) + "/../" ).resolve()
-    return f"{dir}/__downloads__/{ts}"
+    dir = f"{dir}/__{dirname}__/{ts}"
+    path = Path(f"{dir}/__{dirname}__/{ts}")
+
+    os.makedirs(path, exist_ok=True)
+    return path.resolve()
+
 
 
 def reports_from_github(args:Namespace, dir:str):
+    """
+    Fetch the reporting artifacts for each repo the org and team
+    has access to
+    """
     out.group_start("Github data")
 
     g:Github = Github(args.organisation_token)
@@ -66,15 +76,62 @@ def reports_from_github(args:Namespace, dir:str):
     return (reports, missing)
 
 
+def merge_raw_packages(report_files:list) -> list:
+    """
+    Read all report files in as json, load the package data into
+    a list an return all of that data
+    """
+    packages = []
+    out.group_start("Merging packages")
+    for name, dir in report_files:
+        file_path = f"{dir}/raw.json"
+        if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
+            with open(file_path, 'r') as json_file:
+                data = json.load(json_file)['packages']
+                out.log(f"Loaded [{len(data)}] packages from [{name}] [{file_path}]")
+                packages.extend(data)
+        else:
+            out.notice(f"Raw report not found / accessible [{file_path}]", "Report missing")
+
+    out.group_end()
+    return packages
+
+
+def packages_to_html(
+    packages:list,
+    headers: list = ['name', 'version', 'repository', 'source', 'tags', 'type', 'license']
+    ) -> str:
+
+    head = f"<thead>{heading(headers)}</thead>"
+
+    body = ""
+    for p in packages:
+        r = row(p, headers)
+        body = f"{body}{r}"
+
+    table = f"<table class='filter'>{head}<tbody>{body}</tbody></table>"
+    dir = timestamp_directory("reports")
+
+    file = f"{dir}/report.v1.0.0.html"
+    with open(file, 'w') as html_file:
+        html_file.write(table)
+        html_file.close()
+
+    return file
+
+
 def main():
     """
     Main execution function
     """
-    dir = downloads_dir()
+    dir = timestamp_directory()
     io = handler()
     args = io.parser().parse()
 
     reports, missing = reports_from_github(args, dir)
+    all_packages = merge_raw_packages(reports)
+
+    #packages_to_html(all_packages)
 
 
 
