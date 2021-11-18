@@ -3,28 +3,32 @@ import time
 from datetime import datetime, timedelta
 from github import Github
 from github import RateLimitExceededException
+import github
 from github.Rate import Rate
 from github.RateLimit import RateLimit
 from out import out
 
-class limiter:
+class rate_limiter:
     # create an Rate class as we'll use this struct
-    LIMITER = Rate(None, {}, {'limit':5000, 'remaining':5000}, True)
+    LIMITER:Rate = Rate(None, {}, {'limit':5000, 'remaining':5000}, True)
+    CONNECTION:github.Github = None
 
     @staticmethod
-    def update(connection:Github) -> RateLimit:
+    def update() -> RateLimit:
         """
         """
-        ratelimit = connection.get_rate_limit()
+        if rate_limiter.CONNECTION == None:
+            raise ValueError("CONNECTION not set")
+        ratelimit = rate_limiter.CONNECTION.get_rate_limit()
         out.debug(f"Rate limit data: [{ratelimit.core.remaining}/{ratelimit.core.limit}] reset: [{ratelimit.core.reset}]")
-        limiter.LIMITER = ratelimit.core
-        return limiter.LIMITER
+        rate_limiter.LIMITER = ratelimit.core
+        return rate_limiter.LIMITER
 
     @staticmethod
-    def pause(connection:Github, extend:int = 5) -> datetime:
+    def pause(extend_pause_by:int = 5) -> datetime:
         """
         """
-        date = limiter.LIMITER.reset + timedelta(seconds=extend)
+        date = rate_limiter.LIMITER.reset + timedelta(seconds=extend_pause_by)
         now = datetime.utcnow()
         pause_for = (date - now).total_seconds()
         out.debug(f"Pausing execution for [{pause_for}] seconds until [{date}]")
@@ -32,17 +36,16 @@ class limiter:
         return date
 
     @staticmethod
-    def check(connection:Github, refresh:bool = True):
+    def check(refresh:bool = True, extend_pause_by:int = 5):
         """
         """
         try:
             if refresh:
-                limiter.update(connection)
-
-            if limiter.LIMITER.remaining <= 1:
-                limiter.pause(connection, 5)
+                rate_limiter.update()
+            if rate_limiter.LIMITER.remaining <= 1:
+                rate_limiter.pause(extend_pause_by)
 
         except RateLimitExceededException:
-            limiter.pause()
+            rate_limiter.pause()
 
         return

@@ -1,7 +1,9 @@
 ################################################################################
 # Based on this pr https://github.com/JacekPliszka/PyGithub/pull/1/files
 # which adds the artifact fetching
-
+import os
+import requests, zipfile, io
+from pathlib import Path
 import github.GithubObject
 
 
@@ -107,13 +109,19 @@ class Artifact(github.GithubObject.CompletableGithubObject):
         self._created_at = github.GithubObject.NotSet
         self._expires_at = github.GithubObject.NotSet
         self._updated_at = github.GithubObject.NotSet
+        self._artifact = github.GithubObject.NotSet
 
-    def get_artifact(self):
-        if self._artifact is None:
-            header, output = self._requester.requestMultipartBinaryAndCheck(
-                "GET", self.archive_download_url
-            )
-        return self._artifact
+    def download(self, destination_directory:str, headers:dict):
+        destination_directory = Path( os.path.dirname(destination_directory) ).resolve()
+        os.makedirs(destination_directory, exist_ok=True)
+
+        r = requests.get(self.archive_download_url, headers=headers)
+        if r.status_code == 200:
+            z = zipfile.ZipFile(io.BytesIO(r.content))
+            z.extractall(destination_directory)
+            return destination_directory
+        return None
+
 
     def _useAttributes(self, attributes):
         if "id" in attributes:
