@@ -11,10 +11,10 @@ inputs:
   team_slug:
     description: 'GitHub slug of the team to run against'
     required: true
-  directory:
-    required: true
-    default: ${{ github.workspace }}
-
+outputs:
+  amalgamated_package_scan_report:
+    description: "Merged report artficat"
+    value: ${{ steps.report_runner.outputs.amalgamated_package_scan_report }}
 runs:
   using: "composite"
   steps:
@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |
         pip --disable-pip-version-check install -r ${{ github.action_path }}/./app/requirements.txt
-    - id: scanner_runner
+    - id: report_runner
       name: Run python script
       shell: bash
       run: |
@@ -39,10 +39,9 @@ runs:
           --organisation-slug='${{ inputs.organisation_slug }}' \
           --organisation-token='${{ inputs.organisation_token }}' \
           --team-slug='${{ inputs.team_slug }}' \
-          --team-slug='${{ inputs.team_slug }}' \
     - id: upload
       name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: 'repository-scan-result'
-        path: ${{ steps.scanner_runner.outputs.artifact_directory }}
+        name: 'amalgamated_package_scan_report'
+        path: ${{ steps.report_runner.outputs.amalgamated_package_scan_report }}
