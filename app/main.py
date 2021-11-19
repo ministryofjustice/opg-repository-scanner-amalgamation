@@ -75,7 +75,7 @@ def reports_from_github(args:Namespace, dir:str):
     return (reports, missing)
 
 
-def merge_raw_packages(report_files:list) -> list:
+def merge_raw_packages(report_files:list, json_file_name:str = "raw.json", json_key:str = "packages") -> list:
     """
     Read all report files in as json, load the package data into
     a list an return all of that data
@@ -83,18 +83,28 @@ def merge_raw_packages(report_files:list) -> list:
     packages = []
     out.group_start("Merging packages")
     for name, dir in report_files:
-        file_path = f"{dir}/raw.json"
+        file_path = f"{dir}/{json_file_name}"
         if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
             with open(file_path, 'r') as json_file:
-                data = json.load(json_file)['packages']
+                loaded = json.load(json_file)
+                data = loaded.get(json_key, []) if json_key != None else loaded
                 out.log(f"Loaded [{len(data)}] packages from [{name}] [{file_path}]")
                 packages.extend(data)
         else:
             out.notice(f"Raw report not found / accessible [{file_path}]", "Report missing")
 
     out.group_end()
-    return packages
+    return sorted(packages, key=lambda p: p['name'])
 
+
+def package_corrections(p:dict) -> dict:
+    tags = p.get('tags', "")
+    version = p.get('version', None)
+    if type(tags) == list:
+        p['tags'] = ", ".join(tags)
+    if type(version) == dict:
+        p['version'] = version.get('version', None)
+    return p
 
 def packages_to_html(
     packages:list,
@@ -112,10 +122,11 @@ def packages_to_html(
 
     body = ""
     for p in packages:
+        p = package_corrections(p)
         r = row(p, headers)
-        body = f"{body}{r}"
+        body = f"{body}{r}\n"
 
-    table = f"<table class='filter'>{head}<tbody>{body}</tbody></table>"
+    table = f"<table class='filter'>\n{head}\n<tbody>\n{body}\n</tbody>\n</table>"
     dir = timestamp_directory("reports")
 
     file_path = f"{dir}/report.v1.0.0.html"
