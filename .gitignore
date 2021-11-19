@@ -3,3 +3,4 @@ __pycache__
 .idea/
 __artifacts__
 __downloads*
+__reports**
