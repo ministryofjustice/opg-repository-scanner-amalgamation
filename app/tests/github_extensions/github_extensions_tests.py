@@ -1,4 +1,3 @@
-from github.PaginatedList import T
 from github.Repository import Repository
 from pprint import pp
 import pytest
