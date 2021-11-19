@@ -1,0 +1,30 @@
+---
+name: "[Python] Tag from main"
+
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  python_tag:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v2"
+        with:
+          token: ${{ secrets.ORG_ACCESS_TOKEN }}
+      - name: "Push latest tag"
+        run: |
+          git config --global user.email "tools@digital.justice.gov.uk"
+          git config --global user.name "Github Action"
+          git tag -fa "latest" -m "latest"
+          git push origin latest --force
+      - name: Increment and push tag
+        uses: anothrNick/github-tag-action@1.33.0
+        id: create_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_ACCESS_TOKEN }}
+          INITIAL_VERSION: 2.0.0
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
+          WITH_V: true
