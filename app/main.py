@@ -126,7 +126,7 @@ def packages_to_html(
         r = row(p, headers)
         body = f"{body}{r}\n"
 
-    table = f"<table class='filter'>\n{head}\n<tbody>\n{body}\n</tbody>\n</table>"
+    table = f"<table>\n{head}\n<tbody>\n{body}\n</tbody>\n</table>"
     dir = timestamp_directory("reports")
 
     file_path = f"{dir}/report.v1.0.0.html"
