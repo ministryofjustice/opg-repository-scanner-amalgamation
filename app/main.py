@@ -75,13 +75,49 @@ def reports_from_github(args:Namespace, dir:str):
     return (reports, missing)
 
 
+def reduce_packages(packages:list) -> list:
+    """
+    Reduces the packages list to a subset grouped by the name, repo and source file
+    in order to reduce the size of the html file generated.
+    """
+    out.group_start("Redcuding package data by Name, Repository and Source")
+    # merge packages that are identical
+    packages = [dict(t) for t in {tuple(d.items()) for d in packages}]
+
+    # add signature of the 3 things we are matching by to each package to make filtering easier
+    for p in packages:
+        p['sig'] = f"{p.get('name', None)}-{p.get('repository', None)}-{p.get('source', None)}"
+        out.debug(f"Generated signature field {p['sig']}")
+
+    by_sig = []
+    seen = []
+    i = 0
+    t = len(packages)
+    for p in packages:
+        i = i + 1
+        vers = []
+        sig = p.get('sig', None)
+        out.log(f"[{i}/{t}] Package signature [{sig}]")
+        # if we havent seen this sig before, add to the main list
+        if sig not in seen:
+            seen.append(sig)
+            sig_matched = list ( filter ( lambda i: i.get('sig') == sig, packages))
+            for s in sig_matched:
+                vers.append(s.get('version', ""))
+            out.debug(f"[{i}/{t}] Found [{len(sig_matched)}] packages with [{sig}] with [{len(vers)}] versions")
+            p['version'] = ", ".join(map(str, vers))
+            by_sig.append(p)
+
+    out.group_end()
+    return by_sig
+
 def merge_raw_packages(report_files:list, json_file_name:str = "raw.json", json_key:str = "packages") -> list:
     """
     Read all report files in as json, load the package data into
     a list an return all of that data
     """
     packages = []
-    out.group_start("Merging packages")
+    out.group_start("Merging package files")
     i = 0
     total = len(report_files)
     for name, dir in report_files:
@@ -99,14 +135,16 @@ def merge_raw_packages(report_files:list, json_file_name:str = "raw.json", json_
 
     out.group_end()
 
-    # merge packages that are identical
-    packages = [dict(t) for t in {tuple(d.items()) for d in packages}]
+    version_diffed = reduce_packages(packages)
 
-
-    return sorted(packages, key=lambda p: p['name'])
+    return sorted(version_diffed, key=lambda p: p['name'])
 
 
 def package_corrections(p:dict) -> dict:
+    """
+    As we had a few versions of this tool running with errors in there,
+    this compenstates for known issues in earlier releases
+    """
     tags = p.get('tags', "")
     version = p.get('version', None)
     if type(tags) == list:
