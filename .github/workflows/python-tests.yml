@@ -3,7 +3,11 @@ name: "[Python] Run tests"
 
 on:
   pull_request:
-    branches: "*"
+    branches:
+      - "*"
+  push:
+    branches:
+      - "*"
   schedule:
     - cron: '15 6 * * 1'
 
