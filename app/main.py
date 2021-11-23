@@ -160,6 +160,11 @@ def main():
     html_file, json_file = packages_to_html(all_packages)
     dir = os.path.dirname(html_file)
 
+    out.group_start("Repositories without reports")
+    for repo, arch in missing:
+        out.log(f"Repository [{repo}] archived [{arch}]")
+    out.group_end()
+
     out.group_start("Output")
     out.log(f"Generated reports here [{dir}]")
     out.log(f"  HTML report here [{html_file}]")
