@@ -82,16 +82,20 @@ def merge_raw_packages(report_files:list, json_file_name:str = "raw.json", json_
     """
     packages = []
     out.group_start("Merging packages")
+    i = 0
+    total = len(report_files)
     for name, dir in report_files:
+        i = i +1
         file_path = f"{dir}/{json_file_name}"
         if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
             with open(file_path, 'r') as json_file:
                 loaded = json.load(json_file)
                 data = loaded.get(json_key, []) if json_key != None else loaded
-                out.log(f"Loaded [{len(data)}] packages from [{name}] [{file_path}]")
+                out.log(f"[{i}/{total}] Loaded [{len(data)}] packages from [{name}] [{file_path}]")
                 packages.extend(data)
         else:
-            out.notice(f"Raw report not found / accessible [{file_path}]", "Report missing")
+            out.notice(f"[{i}/{total}] Raw report not found / accessible [{file_path}]", "Report missing")
+
 
     out.group_end()
     return sorted(packages, key=lambda p: p['name'])
