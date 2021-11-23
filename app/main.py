@@ -98,6 +98,11 @@ def merge_raw_packages(report_files:list, json_file_name:str = "raw.json", json_
 
 
     out.group_end()
+
+    # merge packages that are identical
+    packages = [dict(t) for t in {tuple(d.items()) for d in packages}]
+
+
     return sorted(packages, key=lambda p: p['name'])
 
 

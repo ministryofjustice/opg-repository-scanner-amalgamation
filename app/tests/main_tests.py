@@ -20,8 +20,11 @@ def test_merge_raw_packages():
     """
     """
     dir = Path( os.path.dirname(__file__ ) + "/../../" ).resolve()
+    # add the same data in multiple times to ensure duplicates are removed
     files = [
         ("OLD", f"{_ROOT_DIR}/__samples/raw_files/old"),
+        ("NEW", f"{_ROOT_DIR}/__samples/raw_files/new"),
+        ("NEW", f"{_ROOT_DIR}/__samples/raw_files/new"),
         ("NEW", f"{_ROOT_DIR}/__samples/raw_files/new")
     ]
 
