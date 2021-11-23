@@ -125,8 +125,12 @@ def packages_to_html(
     head = f"<thead>{heading(headers)}</thead>"
 
     body = ""
+    i = 0
+    total = len(packages)
     for p in packages:
+        i = i + 1
         p = package_corrections(p)
+        out.log(f"[{i}/{total}] Package {p.get('name')}")
         r = row(p, headers)
         body = f"{body}{r}\n"
 
@@ -165,8 +169,11 @@ def main():
     dir = os.path.dirname(html_file)
 
     out.group_start("Repositories without reports")
+    i = 0
+    t = len(missing)
     for repo, arch in missing:
-        out.log(f"Repository [{repo}] archived [{arch}]")
+        i = i +1
+        out.log(f"[{i}/{t}] Repository [{repo}] archived [{arch}]")
     out.group_end()
 
     out.group_start("Output")
