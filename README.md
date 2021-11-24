@@ -6,7 +6,7 @@ This action is intended to fetch all repository scan results and merge them into
 
 ### `organisation_slug`
 
-**Default: `opg`**
+**Default: `ministryofjustice`**
 
 The slug of the github organisation we are fetching reports from.
 
@@ -14,7 +14,9 @@ The slug of the github organisation we are fetching reports from.
 
 Token used to access the github organisation and its teams.
 
-### `team_slug` **\***
+### `team_slug`
+
+**Default: `opg`**
 
 The GitHub team within the organisation whose repositories we are going to check.
 

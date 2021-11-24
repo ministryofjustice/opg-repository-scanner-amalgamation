@@ -3,12 +3,13 @@ description: 'Amalgamate reports to a single report that can be published'
 inputs:
   organisation_slug:
     description: 'Slug of org to use for permissions'
-    default: 'opg'
+    default: 'ministryofjustice'
     required: true
   organisation_token:
     description: 'GitHub token which has org level access'
     required: true
   team_slug:
+    default: 'opg'
     description: 'GitHub slug of the team to run against'
     required: true
 outputs:
